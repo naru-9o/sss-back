@@ -7,7 +7,13 @@ const { sendFeeReminders } = require("./utils/reminder");
 
 dotenv.config();
 const app = express();
-app.use(cors());
+
+// Allow CORS from your frontend domain
+app.use(cors({
+  origin: "https://sss-record.netlify.app",  // ✅ Add your Netlify frontend URL here
+  credentials: true
+}));
+
 app.use(express.json());
 
 // MongoDB connection
@@ -30,16 +36,16 @@ app.post("/send-reminders", async (req, res) => {
   }
 });
 
-// Root route (just a confirmation message)
+// Root route
 app.get("/", (req, res) => {
   res.json({
     message: "✅ Gym Backend API is running",
-    frontend: "http://localhost:5173",
+    frontend: "https://sss-record.netlify.app", // ✅ Replace localhost with Netlify domain
   });
 });
 
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at port ${PORT}`);
 });
